@@ -22,6 +22,9 @@ let audio;
 let audioLoader;
 let audioAnalyser;
 
+const min = 0;
+const power = .0001;
+
 function onWindowResize() {
 	HEIGHT = window.innerHeight;
 	WIDTH = window.innerWidth;
@@ -63,7 +66,8 @@ function init() {
 	audioAnalyser = new THREE.AudioAnalyser(audio, 2048);
 
 	// MESH
-	const texture = new THREE.TextureLoader().load( 'https://cdn.intra.42.fr/users/medium_' + 'norminet' + '.jpg' );
+	const id = 'norminet';
+	const texture = new THREE.TextureLoader().load( 'https://cdn.intra.42.fr/users/medium_' + id + '.jpg' );
 
 	meshGroup = new Array(3000);
 	meshBody = new Array(meshGroup.length);
@@ -77,7 +81,9 @@ function init() {
 		);
 		meshBody[i].receiveShadow = false;
 		meshGroup[i].add(meshBody[i]);
-		meshGroup[i].position.set(Math.cos(i) * 300, Math.sin(i) * 300, (-i * 10) + 300)
+		meshGroup[i].position.set(Math.cos(i) * 300, Math.sin(i) * 300, (-i * 10) + 300);
+		meshGroup[i].rotation.set(Math.sin(i) * .5, -Math.cos(i) * .5, 0);
+		meshGroup[i].scale.set(min, min, min);
 		scene.add(meshGroup[i]);
 	}
 }
@@ -86,12 +92,10 @@ function init() {
 function loop() {
 	const data = audioAnalyser.getFrequencyData();
 	if (musicLaunched == true) {
-		const min = 1;
-		const power = .00005;
 		let xData = 0;
 
-		for (let j = 0 ; j < 200 ; j++) {
-			xData += data[j * 5];
+		for (let j = 400 ; j < 600 ; j++) {
+			xData += data[j];
 		}
 		meshGroup[0].scale.set(min + (xData * power), min + (xData * power), .1);
 		for (let i = meshGroup.length - 1 ; i > 0 ; i--) {
@@ -111,7 +115,7 @@ function onDocumentMouseDown( event ) {
 		audioLoader.load('anarchyroad.mp3', (buffer) => {
 			audio.setBuffer(buffer);
 			audio.setLoop(true);
-			audio.play();  // Start playback
+			audio.play();
 		});
 	}
 }
