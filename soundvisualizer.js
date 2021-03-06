@@ -46,7 +46,7 @@ function init() {
 	renderer = new THREE.WebGLRenderer({alpha: true, antialias: false });
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize(WIDTH, HEIGHT);
-	renderer.shadowMapEnabled = true;
+	renderer.shadowMap.enabled = true;
 	container = document.getElementById('world');
 	container.appendChild(renderer.domElement);
 	windowHalfX = WIDTH / 2;
