@@ -73,30 +73,30 @@ function init() {
 	audioAnalyser = new THREE.AudioAnalyser(audio, 2048);
 
 	// MESH
-	meshGroup = new Array(600);
-	meshBody = new Array(meshGroup.length);
-	textures = new Array(studs.length);
-	for (let i = 0 ; i < meshGroup.length && i < studs.length ; i++) {
-		textures[i] = new THREE.TextureLoader().load( 'https://cdn.intra.42.fr/users/medium_' + studs[i] + '.jpg' );
-	}
-
-	for (let i = 0 ; i < meshGroup.length ; i++) {
-		meshGroup[i] = new THREE.Group();
-		meshBody[i] = new THREE.Mesh(
+	textures = new Array(studs.length).fill(undefined).map((_, index) => {
+		return new THREE.TextureLoader().load( 'https://cdn.intra.42.fr/users/medium_' + studs[index] + '.jpg' );
+	});
+	const instancesNumber = 600;
+	meshBody = new Array(instancesNumber).fill(undefined).map((_, index) => {
+		const body = new THREE.Mesh(
 			new THREE.CircleGeometry(25, 4),
 			new THREE.MeshBasicMaterial({
-				map: textures[i % studs.length]
-			})
-		);
-		meshBody[i].receiveShadow = false;
-		meshGroup[i].add(meshBody[i]);
-		meshGroup[i].position.set(Math.cos(i) * 300,
-			Math.sin(i) * 300,
-			(-i * 10) + 400);
-		meshGroup[i].rotation.set(Math.sin(i) * 1, -Math.cos(i) * 1, 0);
-		meshGroup[i].scale.set(0, 0, 0);
-		scene.add(meshGroup[i]);
-	}
+				map: textures[index % studs.length]
+			}));
+		body.receiveShadow = false;
+		return body;
+	});
+	meshGroup = new Array(instancesNumber).fill(undefined).map((_, index) => {
+		const group = new THREE.Group();
+		group.add(meshBody[index]);
+		group.position.set(Math.cos(index) * 300,
+			Math.sin(index) * 300,
+			(-index * 10) + 400);
+		group.rotation.set(Math.sin(index) * 1, -Math.cos(index) * 1, 0);
+		group.scale.set(0, 0, 0);
+		scene.add(group);
+		return group;
+	});
 
 	// TEXT
 	instructionText.style.position = 'absolute';
@@ -123,6 +123,14 @@ function loop() {
 				meshGroup[i - 1].scale.y,
 				meshGroup[i - 1].scale.z);
 		}
+		meshGroup.slice(0).reverse().map((mesh, index) => {
+			if (index > 0) {
+				const newIndex = meshGroup.length - index - 1;
+				mesh.scale.set(meshGroup[newIndex].scale.x,
+					meshGroup[newIndex].scale.y,
+					meshGroup[newIndex].scale.z);
+			}
+		});
 	}
 	renderer.render(scene, camera);
 	requestAnimationFrame(loop);
