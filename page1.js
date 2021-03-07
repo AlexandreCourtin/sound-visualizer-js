@@ -30,7 +30,6 @@ let audio;
 let audioLoader;
 let audioAnalyser;
 
-const min = 0;
 const power = .00001;
 
 function onWindowResize() {
@@ -84,7 +83,7 @@ function init() {
 	for (let i = 0 ; i < meshGroup.length ; i++) {
 		meshGroup[i] = new THREE.Group();
 		meshBody[i] = new THREE.Mesh(
-			new THREE.CircleGeometry(25, 50),
+			new THREE.CircleGeometry(25, 4),
 			new THREE.MeshBasicMaterial({
 				map: textures[i % studs.length]
 			})
@@ -117,10 +116,8 @@ function loop() {
 	if (musicLaunched == true) {
 		let xData = 0;
 
-		for (let j = 0 ; j < data.length ; j++) {
-			xData += data[j];
-		}
-		meshGroup[0].scale.set(min + (xData * power), min + (xData * power), .1);
+		xData = data.reduce((accumulator, currentValue) => accumulator + currentValue);
+		meshGroup[0].scale.set(xData * power, xData * power, .1);
 		for (let i = meshGroup.length - 1 ; i > 0 ; i--) {
 			meshGroup[i].scale.set(meshGroup[i - 1].scale.x,
 				meshGroup[i - 1].scale.y,
