@@ -76,7 +76,7 @@ function init() {
 	textures = new Array(studs.length).fill(undefined).map((_, index) => {
 		return new THREE.TextureLoader().load( 'https://cdn.intra.42.fr/users/medium_' + studs[index] + '.jpg' );
 	});
-	const instancesNumber = 600;
+	const instancesNumber = 400;
 	meshBody = new Array(instancesNumber).fill(undefined).map((_, index) => {
 		const body = new THREE.Mesh(
 			new THREE.CircleGeometry(25, 4),
@@ -89,8 +89,8 @@ function init() {
 	meshGroup = new Array(instancesNumber).fill(undefined).map((_, index) => {
 		const group = new THREE.Group();
 		group.add(meshBody[index]);
-		group.position.set(Math.cos(index) * 300,
-			Math.sin(index) * 300,
+		group.position.set(Math.cos(index) * (instancesNumber - (index * .9)),
+			Math.sin(index) * (instancesNumber - (index * .9)),
 			(-index * 10) + 400);
 		group.rotation.set(Math.sin(index) * 1, -Math.cos(index) * 1, 0);
 		group.scale.set(0, 0, 0);
