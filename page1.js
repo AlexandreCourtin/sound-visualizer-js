@@ -30,7 +30,7 @@ let audio;
 let audioLoader;
 let audioAnalyser;
 
-const power = .00001;
+const power = .00003;
 
 function onWindowResize() {
 	HEIGHT = window.innerHeight;
@@ -94,7 +94,7 @@ function init() {
 			Math.sin(i) * 300,
 			(-i * 10) + 400);
 		meshGroup[i].rotation.set(Math.sin(i) * 1, -Math.cos(i) * 1, 0);
-		meshGroup[i].scale.set(min, min, min);
+		meshGroup[i].scale.set(0, 0, 0);
 		scene.add(meshGroup[i]);
 	}
 
@@ -133,7 +133,7 @@ function onDocumentMouseDown( event ) {
 	if (musicLaunched == false) {
 		musicLaunched = true;
 		document.body.removeChild(instructionText);
-		audioLoader.load('anarchyroad.mp3', (buffer) => {
+		audioLoader.load('lastlegs.mp3', (buffer) => {
 			audio.setBuffer(buffer);
 			audio.setLoop(true);
 			audio.play();
