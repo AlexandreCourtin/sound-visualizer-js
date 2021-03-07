@@ -21,6 +21,7 @@ var HEIGHT,
 	windowHalfX,
 	windowHalfY;
 
+let instructionText = document.createElement('div');
 let meshGroup;
 let meshBody;
 let musicLaunched = false;
@@ -97,6 +98,17 @@ function init() {
 		meshGroup[i].scale.set(min, min, min);
 		scene.add(meshGroup[i]);
 	}
+
+	// TEXT
+	instructionText.style.position = 'absolute';
+	instructionText.style.width = 100;
+	instructionText.style.height = 100;
+	instructionText.style.color = "white";
+	instructionText.style.fontSize = 42;
+	instructionText.innerHTML = "Click anywhere to play music";
+	instructionText.style.top = 100 + 'px';
+	instructionText.style.left = 100 + 'px';
+	document.body.appendChild(instructionText);
 }
 
 //LOGIC FUNCTIONS
@@ -123,6 +135,7 @@ function onDocumentMouseDown( event ) {
 	event.preventDefault();
 	if (musicLaunched == false) {
 		musicLaunched = true;
+		document.body.removeChild(instructionText);
 		audioLoader.load('anarchyroad.mp3', (buffer) => {
 			audio.setBuffer(buffer);
 			audio.setLoop(true);
