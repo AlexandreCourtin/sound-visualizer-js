@@ -3,7 +3,7 @@ const studs = ['norminet', 'acourtin', 'gsmith', 'rfautier', 'alerandy',
 	'cormarti', 'cpaquet', 'esuits', 'mrigal', 'lolivet',
 	'jvitry', 'jbulant', 'cmercier', 'roddavid', 'scornaz',
 	'tlernoul', 'tle-gac-', 'vbaudot', 'rahassin', 'charly',
-	'salty'];
+	'salty', 'sophie'];
 
 //THREEJS RELATED VARIABLES
 var scene,
